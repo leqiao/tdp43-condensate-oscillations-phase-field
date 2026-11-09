@@ -1,0 +1,3 @@
+undriven: N_k = 3, N_p = 15, k_kin = 2.31, k_pho = 4.44e-08, dmu_k = 0, dmu_p = 0;  T = 50 (30.0 us), 14285714 steps
+done in 83.8 min -> code/../data/passive/passive_1d_undriven_nk3_np15.npz
+  chains 169.3 -> 163.9 (last 20%: 163.9 +- 0.0);  pSer/chain 0.00 -> 1.56 (last 20%: 1.56 +- 0.00);  F rises 0

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Scratch output written into code/ when re-running simulations
+# (published data live in data/, figures in figures/)
+code/*.npz
+code/*.log
+code/cells_*/
+code/figures/

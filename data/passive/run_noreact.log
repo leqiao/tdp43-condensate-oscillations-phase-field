@@ -1,0 +1,5 @@
+code/model.py:186: RuntimeWarning: invalid value encountered in scalar divide
+  if abs(nK / lK - 1) < 1e-12 and abs(nP / lP - 1) < 1e-12:
+noreact: N_k = 0, N_p = 0, k_kin = 0, k_pho = 0, dmu_k = 4.5, dmu_p = -18.5923;  T = 50 (30.0 us), 14285714 steps
+done in 85.1 min -> code/../data/passive/passive_1d_noreact.npz
+  chains 169.3 -> 174.4 (last 20%: 174.4 +- 0.0);  pSer/chain 0.00 -> 0.00 (last 20%: 0.00 +- 0.00);  F rises 0
