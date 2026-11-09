@@ -16,18 +16,45 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-import natstyle as NS
+MM, FS = 1.0 / 25.4, 7
+# Okabe-Ito colours
+CVD = dict(blue='#0072B2', vermillion='#D55E00', green='#009E73', purple='#CC79A7',
+           orange='#E69F00', black='#000000')
+SANS = ['Arial', 'Helvetica', 'Liberation Sans', 'Arimo', 'Nimbus Sans', 'FreeSans',
+        'DejaVu Sans']
+
+
+def set_style(fs=FS):
+    have = {f.name for f in matplotlib.font_manager.fontManager.ttflist}
+    fam = next((n for n in SANS if n in have), 'DejaVu Sans')
+    plt.rcParams.update({
+        'font.family': 'sans-serif', 'font.sans-serif': SANS, 'mathtext.fontset': 'custom',
+        'mathtext.rm': fam, 'mathtext.it': fam + ':italic', 'mathtext.bf': fam + ':bold',
+        'font.size': fs, 'axes.labelsize': fs, 'axes.titlesize': fs,
+        'xtick.labelsize': fs - 1, 'ytick.labelsize': fs - 1, 'legend.fontsize': fs - 1,
+        'axes.linewidth': 0.5, 'xtick.major.width': 0.5, 'ytick.major.width': 0.5,
+        'xtick.major.size': 2.0, 'ytick.major.size': 2.0,
+        'legend.frameon': False, 'legend.handletextpad': 0.4,
+        'legend.columnspacing': 0.8, 'legend.handlelength': 1.1, 'lines.linewidth': 0.7,
+        'savefig.dpi': 600, 'pdf.fonttype': 42, 'ps.fonttype': 42,
+    })
+
+
+def panel_label(ax, letter, dx=-0.13, dy=1.03):
+    ax.text(dx, dy, letter, transform=ax.transAxes,
+            fontsize=FS + 1, fontweight='bold', va='bottom', ha='left')
+
 
 PHIBAR, L, NCHAIN = 0.30, 1.16, 200
 POINTS = [(2, 10), (2, 12), (3, 12), (3, 15), (3, 18), (4, 20)]
 DROPLET = ('C_', 'D_', 'E_', 'F_', 'G_')
 # starts shown in panel a
-SHOWN = [('C_slab', 'limit cycle', NS.CVD['black']),
-         ('C_size0.25', 'small droplet, 0.25$\\times$', NS.CVD['blue']),
-         ('D_size1_p0.4', 'pre-phosphorylated, $p=0.4$', NS.CVD['vermillion']),
-         ('E_kin_dilute', 'kinase in dilute phase', NS.CVD['green']),
-         ('F_drop3_s0', 'three droplets', NS.CVD['purple']),
-         ('G_cyc_min', 'restart at cycle minimum', NS.CVD['orange'])]
+SHOWN = [('C_slab', 'limit cycle', CVD['black']),
+         ('C_size0.25', 'small droplet, 0.25$\\times$', CVD['blue']),
+         ('D_size1_p0.4', 'pre-phosphorylated, $p=0.4$', CVD['vermillion']),
+         ('E_kin_dilute', 'kinase in dilute phase', CVD['green']),
+         ('F_drop3_s0', 'three droplets', CVD['purple']),
+         ('G_cyc_min', 'restart at cycle minimum', CVD['orange'])]
 
 
 def name(v):
@@ -67,8 +94,8 @@ def main():
     a = ap.parse_args()
     dirs = a.dirs.split(',')
 
-    NS.nature_style()
-    fig = plt.figure(figsize=(NS.WIDTH_2COL * NS.MM, 150 * NS.MM), constrained_layout=True)
+    set_style()
+    fig = plt.figure(figsize=(183 * MM, 150 * MM), constrained_layout=True)
     gs = fig.add_gridspec(4, 3, height_ratios=[0.09, 1, 1, 1.05])   # row 0: shared legend
     P = [fig.add_subplot(gs[r, c]) for r in (1, 2) for c in range(3)]
     for ax in P[1:]:
@@ -107,7 +134,7 @@ def main():
     h, l = P[0].get_legend_handles_labels()
     lg = fig.add_subplot(gs[0, :])
     lg.axis('off')
-    lg.legend(h, l, loc='center', ncol=6, fontsize=NS.FS, handlelength=1.4,
+    lg.legend(h, l, loc='center', ncol=6, fontsize=FS, handlelength=1.4,
               columnspacing=1.0, borderaxespad=0.0)
 
     # b -- deviations from the slab start
@@ -134,9 +161,9 @@ def main():
                 dA.append(100 * (r['pamp'] / ref['pamp'] - 1))
         dT, dP, dA = np.array(dT), np.array(dP), np.array(dA)
         jit = rng.uniform(-0.05, 0.05, len(dT))
-        for off, y, mk, c, name_ in ((-0.2, dT, 'o', NS.CVD['blue'], 'period'),
-                                     (0.0, dP, '^', NS.CVD['vermillion'], 'mean pSer'),
-                                     (0.2, dA, 's', NS.CVD['green'], 'pSer amplitude')):
+        for off, y, mk, c, name_ in ((-0.2, dT, 'o', CVD['blue'], 'period'),
+                                     (0.0, dP, '^', CVD['vermillion'], 'mean pSer'),
+                                     (0.2, dA, 's', CVD['green'], 'pSer amplitude')):
             B.plot(i + off + jit, y, mk, ms=3, mfc='none', mec=c, mew=0.6,
                    label=name_ if i == 0 else None)
         worst_T = max(worst_T, np.abs(dT).max())
@@ -151,11 +178,11 @@ def main():
     B.set_ylabel('deviation from slab start (%)')
     lim = max(1.25 * max(worst_T, worst_M), 1.0)
     B.set_ylim(-lim, lim)
-    B.legend(loc='upper right', ncol=3, fontsize=NS.FS)
+    B.legend(loc='upper right', ncol=3, fontsize=FS)
     print('largest deviation over all points: period %.3f%%, pSer measures %.3f%%' % (worst_T, worst_M))
 
-    NS.panel_label(P[0], 'a', dx=-0.3, dy=1.04)
-    NS.panel_label(B, 'b', dx=-0.08, dy=1.02)
+    panel_label(P[0], 'a', dx=-0.3, dy=1.04)
+    panel_label(B, 'b', dx=-0.08, dy=1.02)
     os.makedirs(os.path.dirname(a.out) or '.', exist_ok=True)
     fig.savefig(a.out)
     print('wrote', a.out)
