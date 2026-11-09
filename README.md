@@ -2,8 +2,11 @@
 
 Code and data for the continuum model in our preprint
 ([bioRxiv, doi:10.64898/2026.10.27.762139](https://www.biorxiv.org/content/10.64898/2026.10.27.762139v1)):
-Fig. 4a–e and the Supplementary Figures on the continuum model. The molecular-dynamics part
-of the study is not included.
+Fig. 4a–e and the Supplementary Figures on the continuum model. The molecular-dynamics (MD)
+simulations are not part of this repository. Their code, and the HOOMD-blue plugin with the
+Ashbaugh–Hatch pair potential used for the non-bonded interactions, are on GitHub:
+[ezippo/hoomd3_phosphorylation](https://github.com/ezippo/hoomd3_phosphorylation) and
+[ezippo/ashbaugh_plugin](https://github.com/ezippo/ashbaugh_plugin).
 
 ```
 code/      model (model.py), parameters of Table 1 (config.py), simulation and plotting scripts
